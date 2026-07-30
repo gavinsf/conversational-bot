@@ -25,6 +25,11 @@ class SenderType(enum.Enum):
     agent          = "agent"
     system         = "system"
 
+class Priority(enum.Enum):
+    low            = "low"
+    medium         = "medium"
+    high           = "high"
+
 class Conversation(Base):
     __tablename__ = "conversations"
     id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -61,6 +66,7 @@ class Customer(Base):
     )
 
 class Message(Base):
+    __tablename__ = "messages"
     id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     conv_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("conversations.id"))
     sender: Mapped[SenderType] = mapped_column(SQLEnum(SenderType), nullable=False)
@@ -73,4 +79,18 @@ class Message(Base):
 
     conversation: Mapped["Conversation"] = mapped_column(
         back_populates="message", cascade="all, delete-orphan"
+    )
+
+class EscalationTicket(Base):
+    __tablename__ = "escalation_tickets"
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    conversation_id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("conversations.id"), unique=True)
+    reason: Mapped[String] = mapped_column(String, nullable=False)
+    priority: Mapped[Priority] = mapped_column(SQLEnum(Priority))
+    assigned_agent: Mapped[String | None] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    conversation: Mapped["Conversation"] = mapped_column(
+        back_populates="escalation_tickets",
     )
