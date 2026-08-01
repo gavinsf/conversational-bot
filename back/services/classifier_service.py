@@ -1,14 +1,9 @@
 from fastapi import FastAPI, APIRouter
-from back.schemas import ChatResponse, ChatText
+from back.schemas import ChatResponse, ChatInput
 from back.config import settings
-import uuid
 
-chat_router = APIRouter(prefix="/api/chat")
-
-@chat_router.post("/", response_model=ChatResponse)
-async def intent_classifier(text: ChatText, session_id: str | None = None):
-    if not session_id:
-        session_id = str(uuid.uuid4())
+async def intent_classifier(message: ChatInput):
+    session_id = str(session_id)
     
     async with settings.session.client("lexv2-runtime", region_name=settings.AWS_REGION) as client:
         response = await client.recognize_text(
@@ -16,7 +11,7 @@ async def intent_classifier(text: ChatText, session_id: str | None = None):
             botAliasId = settings.BOT_ALIAS_ID,
             localeId = settings.LOCALE_ID,
             sessionId = session_id,
-            text = text.text
+            text = message.text
         )
 
         interpretations = response.get("interpretations", [])

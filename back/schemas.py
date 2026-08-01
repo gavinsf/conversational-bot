@@ -3,8 +3,8 @@ from typing import Optional
 import uuid
 
 
-class ChatText(BaseModel):
-    id: uuid.UUID
+class ChatInput(BaseModel):
+    id: str
     text: str
 
 
