@@ -10,3 +10,4 @@ async def create_session_id(response: Response):
         httponly=True,
         max_age = 60 * 60 * 24
     )
+    return session_id

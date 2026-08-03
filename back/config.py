@@ -5,7 +5,7 @@ import aioboto3
 load_dotenv()
 
 class Settings():
-    DB_URL = os.getenv("DB")
+    POSTGRES_URL = os.getenv("POSTGRES_URL")
     DEBUG = True
     BOT_ID = os.getenv("LEX_BOT_ID")
     BOT_ALIAS_ID = os.getenv("LEX_BOT_ALIAS_ID")

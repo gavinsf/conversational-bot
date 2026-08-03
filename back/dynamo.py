@@ -17,7 +17,7 @@ async def get_table():
         _dynamo_ctx = session.resource("dynamodb", region_name=settings.AWS_REGION)
         resource = await _dynamo_ctx.__aenter__()
         _table = await resource.Table(TABLE_NAME)
-    return _table
+    yield _table
 
 
 async def close_table():

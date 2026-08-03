@@ -3,7 +3,7 @@ from sqlalchemy.orm import DeclarativeBase
 from back.config import settings
 
 engine = create_async_engine(
-    settings.DB_URL,
+    settings.POSTGRES_URL,
     pool_size = 10,
     max_overflow = 20,
     pool_pre_ping = True,
