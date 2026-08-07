@@ -12,7 +12,7 @@ async def log_message(session_id: str, text: str):
 
 async def get_message(session_id: str):
     async with get_table() as table:
-        response = table.get_item(
+        response = await table.get_item(
             Key={"session_id": session_id}
         )
         return response.get("Item")
