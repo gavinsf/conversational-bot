@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Messages" icon-name="utility:connected_apps">
+        <div class="slds-p-horizontal_small">
+            <p>Status: {status}</p>
+            <div class="slds-scrollable_y" style="height: 200px;">
+                <template for:each={log} for:item="msg">
+                    <p key={msg.id}>{msg.text}</p>
+                </template>
+            </div>
+            <lightning-input label="Message" value={draftMessage} onchange={handleInputChange} onkeyup={handleKeyUp}>
+            </lightning-input>
+            <lightning-button label="Send" onclick={handleSend} class="slds-m-top_small">
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>
